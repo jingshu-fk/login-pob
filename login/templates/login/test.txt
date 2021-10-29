@@ -1,0 +1,134 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    alibabacloud.com/loadAwareScheduleEnabled: "true"
+    alibabacloud.com/qosClass: LSR
+    cni.projectcalico.org/podIP: 10.42.253.205/32
+    cni.projectcalico.org/podIPs: 10.42.253.205/32
+    cpu-policy: critical
+    cpuset: '{"stress-ng":{"0":{"elems":{"0":{}}}}}'
+    cpuset-scheduler: "true"
+  creationTimestamp: "2021-10-22T10:37:55Z"
+  generateName: tf-smoke-gpu-bfd698864-
+  labels:
+    alibabacloud.com/qos: LSR
+    app: tf-smoke-gpu
+    fault-isolation: "false"
+    harmonycloud.cn/bluegreen: tf-smoke-gpu-1
+    nephele/user: admin
+    pod-template-hash: bfd698864
+  name: tf-smoke-gpu-bfd698864-rq6c6
+  namespace: timo
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: tf-smoke-gpu-bfd698864
+    uid: a7de09d4-db37-4367-aa65-d490122619c0
+  resourceVersion: "6196899"
+  uid: 04b07dab-7b9a-4975-b1c8-9e63c35953dd
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: gang
+            operator: In
+            values:
+            - "true"
+    podAntiAffinity: {}
+  automountServiceAccountToken: true
+  containers:
+  - command:
+    - tail
+    - -f
+    - /dev/null
+    env:
+    - name: TZ
+      value: Asia/Shanghai
+    image: harbor.myk8s.aliyunpoc.com/library/poc_image:v0.0.8-test
+    imagePullPolicy: IfNotPresent
+    name: stress-ng
+    ports:
+    - containerPort: 80
+      name: tcp-80
+      protocol: TCP
+    resources:
+      limits:
+        cpu: "1"
+        memory: 256Mi
+      requests:
+        cpu: "1"
+        memory: 256Mi
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-8fs4g
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: 172.24.125.105
+  preemptionPolicy: PreemptLowerPriority
+  priority: 9500
+  priorityClassName: default-lsr
+  restartPolicy: Always
+  schedulerName: aecp-turbo-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: default-token-8fs4g
+    secret:
+      defaultMode: 420
+      secretName: default-token-8fs4g
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2021-10-22T10:37:55Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2021-10-22T10:37:56Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2021-10-22T10:37:56Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2021-10-22T10:37:55Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://d606f8d806b944d7d2fbd7b5902c07880e7a5e8a6a518803cfc5aa3512e23304
+    image: harbor.myk8s.aliyunpoc.com/library/poc_image:v0.0.8-test
+    imageID: docker://sha256:094fdeceb6d487a7960de44e76e39163e3f41950c1f7e344a399ea8355fafcb0
+    lastState: {}
+    name: stress-ng
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2021-10-22T10:37:56Z"
+  hostIP: 172.24.125.105
+  phase: Running
+  podIP: 10.42.253.205
+  podIPs:
+  - ip: 10.42.253.205
+  qosClass: Guaranteed
+  startTime: "2021-10-22T10:37:55Z"
